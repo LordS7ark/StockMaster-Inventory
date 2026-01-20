@@ -1,4 +1,16 @@
 <?php
+session_start();
+if (!isset($_SESSION['user_id'])) {
+    header("Location: ../secure_pass/login.php");
+    exit();
+}
+$conn = new mysqli("localhost", "root", "", "secure_db");
+
+// Fetch all items
+$result = $conn->query("SELECT * FROM inventory");
+?>
+
+<?php
 // 1. Establish the connection FIRST
 $conn = new mysqli("localhost", "root", "", "inventory_db");
 
@@ -68,6 +80,25 @@ $history = $conn->query("SELECT * FROM sales_history ORDER BY sale_date DESC LIM
     </style>
 </head>
 <body>
+
+<div style="background: #1a1d2b; padding: 15px 30px; display: flex; justify-content: space-between; align-items: center; border-bottom: 2px solid #00ff88; margin-bottom: 30px; font-family: sans-serif;">
+    <div style="color: white; font-weight: bold; font-size: 1.2rem;">
+        📦 Inventory <span style="color: #00ff88;">Manager</span>
+    </div>
+    
+    <div style="display: flex; align-items: center; gap: 20px;">
+        <a href="../secure_pass/portal.php" style="color: #00ff88; text-decoration: none; font-size: 0.9rem;">← Back to Hub</a>
+        
+        <span style="color: #888; font-size: 0.9rem;">
+            User: <strong style="color: #fff;"><?php echo $_SESSION['username']; ?></strong>
+        </span>
+        
+        <a href="../secure_pass/logout.php" 
+           style="background: #ff4d4d; color: white; padding: 8px 15px; border-radius: 5px; text-decoration: none; font-size: 0.9rem; font-weight: bold;">
+           Logout
+        </a>
+    </div>
+</div>
     
 
 <div class="container">
